@@ -1,7 +1,8 @@
 "use strict"
 
 const yargs = require("yargs");
-const geocode = require("./geocode/googleMaps")
+const maps = require("./geocode/googleMaps");
+const weather = require("./geocode/darkSky");
 
 const argv = yargs.options({
     a: {
@@ -15,10 +16,12 @@ const argv = yargs.options({
 .alias("help", "h")
 .argv;
 
-geocode.getLocation(argv.a, (err, data) => {
+maps.getLocation(argv.a, (err, location) => {
     if(err) {
         return console.log(`Error: ${err.type} - ${err.msg}`)
     }
 
-    console.log(data);
+    weather.getWeather(location, (err, weather) => {
+        console.log(err, weather);
+    });
 });
