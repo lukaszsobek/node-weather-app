@@ -15,4 +15,10 @@ const argv = yargs.options({
 .alias("help", "h")
 .argv;
 
-geocode.getLocation(argv.a);
+geocode.getLocation(argv.a, (err, data) => {
+    if(err) {
+        return console.log(`Error: ${err.type} - ${err.msg}`)
+    }
+
+    console.log(data);
+});
