@@ -1,8 +1,7 @@
 "use strict"
 
 const yargs = require("yargs");
-const request = require("request");
-require('dotenv').config()
+const geocode = require("./geocode/googleMaps")
 
 const argv = yargs.options({
     a: {
@@ -16,21 +15,4 @@ const argv = yargs.options({
 .alias("help", "h")
 .argv;
 
-const encodedAddress = encodeURIComponent(argv.a);
-const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}`
- + `&key=${process.env.APIKEY}`;
-
-request({
-    url,
-    json: true
-}, (err,response, body) => {
-    if(err) {
-        return console.log("Unable to connect to geolocation server");
-    }
-    if (body.status === "ZERO_RESULTS") {
-        return console.log("No results found");
-    }
-    
-    const location = body.results[0].geometry.location
-    console.log(location.lat, location.lng);
-});
+geocode.getLocation(argv.a);
