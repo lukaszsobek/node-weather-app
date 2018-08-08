@@ -21,7 +21,13 @@ maps.getLocation(argv.a, (err, location) => {
         return console.log(`Error: ${err.type} - ${err.msg}`)
     }
 
-    weather.getWeather(location, (err, weather) => {
-        console.log(err, weather);
+    weather.getWeather(location, (weatherErr, weather) => {
+        if(weatherErr) {
+            return console.log(`Error: ${weatherErr.type} - ${weatherErr.msg}`)    
+        }
+        console.log(`
+            The weather in ${location.address} now:
+            ${weather}
+        `);
     });
 });
