@@ -16,18 +16,7 @@ const argv = yargs.options({
 .alias("help", "h")
 .argv;
 
-maps.getLocation(argv.a, (err, location) => {
-    if(err) {
-        return console.log(`Error: ${err.type} - ${err.msg}`)
-    }
-
-    weather.getWeather(location, (weatherErr, weather) => {
-        if(weatherErr) {
-            return console.log(`Error: ${weatherErr.type} - ${weatherErr.msg}`)    
-        }
-        console.log(`
-            The weather in ${location.address} now:
-            ${weather}
-        `);
-    });
-});
+maps.getLocation(argv.a)
+    .then(location => weather.getWeather(location))
+    .then(weatherData => console.log(weatherData))
+    .catch(err => console.log(`Error: ${err.type} - ${err.msg}`));
